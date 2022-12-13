@@ -1,70 +1,64 @@
 package com.company;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
-public class Program extends Frame implements ActionListener {
-    TextField pik;
-    TextField kier;
-    TextField karo;
-    TextField trefl;
-    Button zamiana;
-    Button losuj;
-    Button wyczysc;
-    static Dialog d;
-
+public class Program extends JFrame implements ActionListener {
+    JTextField pik;
+    JTextField kier;
+    JTextField karo;
+    JTextField trefl;
+    JButton zamiana;
+    JButton losuj;
+    JButton wyczysc;
+    static JDialog d;
+    BufferedImage image;
     public Program() {
         super("Kalkulator wartości ręki");
-        BufferedImage imageFile = new BufferedImage("/trefl.png");
-        try{
-            imageFile = ImageIO.read(imageFile);
-        }catch(Exception e){
-
-        }
-        setSize(600, 150);
-        pik = new TextField(10);
-        add(pik);
-        add(new Label("Kier:"));
-        kier = new TextField(10);
-        add(kier);
-        add(new Label("Karo:"));
-        karo = new TextField(10);
-        add(karo);
-        add(new Label("Trefl:"));
-        trefl = new TextField(10);
-        add(trefl);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
+        setSize(600, 150);
         setBackground(Color.lightGray);
-        zamiana = new Button("Punkty");
+
+        JLabel pikLabel = new JLabel();
+        pikLabel.setIcon(new ImageIcon(new ImageIcon("pik.png").getImage().getScaledInstance(20,20, Image.SCALE_DEFAULT)));
+        add(pikLabel);
+        pik = new JTextField(10);
+        add(pik);
+        JLabel kierLabel = new JLabel();
+        kierLabel.setIcon(new ImageIcon(new ImageIcon("kier.png").getImage().getScaledInstance(20,20, Image.SCALE_DEFAULT)));
+        kier = new JTextField(10);
+        add(kierLabel);
+        add(kier);
+
+        JLabel karoLabel = new JLabel();
+        karoLabel.setIcon(new ImageIcon(new ImageIcon("karo.png").getImage().getScaledInstance(20,20, Image.SCALE_DEFAULT)));
+        karo = new JTextField(10);
+        add(karoLabel);
+        add(karo);
+
+        JLabel treflLabel = new JLabel();
+        treflLabel.setIcon(new ImageIcon(new ImageIcon("trefl.png").getImage().getScaledInstance(20,20, Image.SCALE_DEFAULT)));
+        trefl = new JTextField(10);
+        add(treflLabel);
+        add(trefl);
+        zamiana = new JButton("Punkty");
         zamiana.addActionListener(this);
         add(zamiana);
-        MenuBar menuBar = new MenuBar();
-        setMenuBar(menuBar);
-        Menu menu = new Menu("Plik");
-        MenuItem mi = new MenuItem("Zamknij", new MenuShortcut('1'));
-        menu.add(mi);
-        menu.addActionListener(this);
-        menuBar.add(menu);
-        losuj = new Button("Losuj");
+        losuj = new JButton("Losuj");
         losuj.addActionListener(this);
         add(losuj);
-        wyczysc = new Button("Wyczyść");
+        wyczysc = new JButton("Wyczyść");
         wyczysc.addActionListener(this);
         add(wyczysc);
         setVisible(true);
-
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -78,7 +72,7 @@ public class Program extends Frame implements ActionListener {
                 String input = "S" + pikValue + "H" + kierValue + "D" + karoValue + "C" + treflValue;
                 Integer value = new Calc().run(input);
                 Frame f= new Frame();
-                d = new Dialog(f , "Wynik" , true);
+                d = new JDialog(f , "Wynik" , true);
                 d.setLayout( new FlowLayout() );
                 Button b = new Button ("OK");
                 b.addActionListener (e1 -> Program.d.setVisible(false));
