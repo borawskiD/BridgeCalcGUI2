@@ -1,14 +1,9 @@
 package com.company;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class Program extends JFrame implements ActionListener {
     JTextField pik;
@@ -18,46 +13,54 @@ public class Program extends JFrame implements ActionListener {
     JButton zamiana;
     JButton losuj;
     JButton wyczysc;
+    JPanel panelTop = new JPanel(new FlowLayout());
+    JPanel panelMid = new JPanel(new FlowLayout());
+    JPanel panelBot = new JPanel(new FlowLayout());
     static JDialog d;
-    BufferedImage image;
+
     public Program() {
         super("Kalkulator wartości ręki");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new FlowLayout());
-        setSize(600, 150);
-        setBackground(Color.lightGray);
+        setSize(600, 135);
 
         JLabel pikLabel = new JLabel();
-        pikLabel.setIcon(new ImageIcon(new ImageIcon("pik.png").getImage().getScaledInstance(20,20, Image.SCALE_DEFAULT)));
-        add(pikLabel);
+        pikLabel.setIcon(new ImageIcon(new ImageIcon("pik.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
         pik = new JTextField(10);
-        add(pik);
+        panelTop.add(pikLabel);
+        panelTop.add(pik);
+        add(panelTop, BorderLayout.NORTH);
+
         JLabel kierLabel = new JLabel();
-        kierLabel.setIcon(new ImageIcon(new ImageIcon("kier.png").getImage().getScaledInstance(20,20, Image.SCALE_DEFAULT)));
+        kierLabel.setIcon(new ImageIcon(new ImageIcon("kier.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
         kier = new JTextField(10);
-        add(kierLabel);
-        add(kier);
 
         JLabel karoLabel = new JLabel();
-        karoLabel.setIcon(new ImageIcon(new ImageIcon("karo.png").getImage().getScaledInstance(20,20, Image.SCALE_DEFAULT)));
+        karoLabel.setIcon(new ImageIcon(new ImageIcon("karo.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
         karo = new JTextField(10);
-        add(karoLabel);
-        add(karo);
 
-        JLabel treflLabel = new JLabel();
-        treflLabel.setIcon(new ImageIcon(new ImageIcon("trefl.png").getImage().getScaledInstance(20,20, Image.SCALE_DEFAULT)));
-        trefl = new JTextField(10);
-        add(treflLabel);
-        add(trefl);
+
+        panelMid.add(kierLabel);
+        panelMid.add(kier);
+
         zamiana = new JButton("Punkty");
         zamiana.addActionListener(this);
-        add(zamiana);
+        panelMid.add(zamiana);
         losuj = new JButton("Losuj");
         losuj.addActionListener(this);
-        add(losuj);
+        panelMid.add(losuj);
         wyczysc = new JButton("Wyczyść");
         wyczysc.addActionListener(this);
-        add(wyczysc);
+        panelMid.add(wyczysc);
+        panelMid.add(karoLabel);
+        panelMid.add(karo);
+        add(panelMid, BorderLayout.CENTER);
+        //Bottom
+        JLabel treflLabel = new JLabel();
+        treflLabel.setIcon(new ImageIcon(new ImageIcon("trefl.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
+        trefl = new JTextField(10);
+        panelBot.add(treflLabel);
+        panelBot.add(trefl);
+        add(panelBot, BorderLayout.SOUTH);
         setVisible(true);
     }
 
@@ -71,14 +74,14 @@ public class Program extends JFrame implements ActionListener {
                 String treflValue = trefl.getText();
                 String input = "S" + pikValue + "H" + kierValue + "D" + karoValue + "C" + treflValue;
                 Integer value = new Calc().run(input);
-                Frame f= new Frame();
-                d = new JDialog(f , "Wynik" , true);
-                d.setLayout( new FlowLayout() );
-                Button b = new Button ("OK");
-                b.addActionListener (e1 -> Program.d.setVisible(false));
-                d.add( new Label ("Wartość ręki: " + value + "\n") );
+                Frame f = new Frame();
+                d = new JDialog(f, "Wynik", true);
+                d.setLayout(new FlowLayout());
+                Button b = new Button("OK");
+                b.addActionListener(e1 -> Program.d.setVisible(false));
+                d.add(new Label("Wartość ręki: " + value + "\n"));
                 d.add(b);
-                d.setSize(350,350);
+                d.setSize(350, 350);
                 d.setVisible(true);
             } catch (NumberFormatException ev) {
                 System.out.println("Blad argumentow!? Wpisz poprawne wartosci!");
